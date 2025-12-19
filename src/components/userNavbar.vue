@@ -27,15 +27,15 @@
 		>
 			<ul class="navbar-nav mx-auto">
 				<li class="nav-item d-lg-none">
-					<RouterLink class="nav-link" to="/">home</RouterLink>
+					<RouterLink class="nav-link" to="/">HOME</RouterLink>
 				</li>
 			</ul>
 
 			<ul class="navbar-nav align-items-center">
 				<li class="nav-item d-none d-lg-block ms-3">
-					<RouterLink to="/user/profile" class="btn profile-btn px-3">
+					<RouterLink to="/" class="btn profile-btn px-3">
 						<i class="fa fa-car me-2"></i>
-						Profile
+						HOME
 					</RouterLink>
 				</li>
 
