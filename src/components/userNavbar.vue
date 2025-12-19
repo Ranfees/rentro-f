@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import api from '@/services/api';
 
 export default {
 	name: 'userNavbar',
@@ -83,7 +83,7 @@ export default {
 			if (!confirmLogout) return;
 
 			try {
-				await axios.post('http://localhost:3000/api/user/logout', {}, { withCredentials: true });
+				await api.post('/user/logout', {}, { withCredentials: true });
 				this.$router.push('/login');
 			} catch (err) {
 				alert('Logout failed');
