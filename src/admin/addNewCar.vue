@@ -1,0 +1,239 @@
+<template>
+  <div class="add-car-container">
+
+    <div class="page-header d-flex justify-content-between align-items-center">
+      <h3 class="mb-0">Add New Car</h3>
+    </div>
+
+    <div class="card shadow mt-4">
+      <div class="card-body">
+
+        <form @submit.prevent="submitCar" enctype="multipart/form-data">
+
+          <!-- Row 1 -->
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>Car Name *</label>
+              <input type="text" v-model="car.name" class="form-control" placeholder="e.g., Toyota Innova Crysta" required>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label>Model Year</label>
+              <input type="number" v-model="car.year" class="form-control" placeholder="2022"  required>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label>Category</label>
+              <select v-model="car.category" class="form-control">
+                <option>SUV</option>
+                <option>Sedan</option>
+                <option>Hatchback</option>
+                <option>MUV</option>
+                <option>Luxury</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label>Seats</label>
+              <input type="number" v-model="car.seats" class="form-control" placeholder="5"  required>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label>Fuel Type</label>
+              <select v-model="car.fuel" class="form-control"  required>
+                <option>Petrol</option>
+                <option>Diesel</option>
+                <option>Electric</option>
+                <option>Hybrid</option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label>Transmission</label>
+              <select v-model="car.transmission" class="form-control"  required>
+                <option>Automatic</option>
+                <option>Manual</option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label>Price / Day (₹) *</label>
+              <input type="number" v-model="car.price" class="form-control" placeholder="e.g., 3500" required>
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="form-group">
+            <label>Status</label>
+            <select v-model="car.status" class="form-control"  required>
+              <option>Available</option>
+              <option>Booked</option>
+              <option>Not Available</option>
+            </select>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label>Short Description</label>
+            <textarea v-model="car.description" class="form-control"  rows="3" placeholder="Add highlights: AC, Driver, luggage capacity, etc."></textarea>
+          </div>
+
+          <!-- Features -->
+          <div class="form-group">
+            <label>Features</label>
+            <div class="d-flex flex-wrap mt-2">
+
+              <div class="mr-3">
+                <input type="checkbox" v-model="car.features" value="AC">
+                <label class="ml-1">AC</label>
+              </div>
+
+              <div class="mr-3">
+                <input type="checkbox" v-model="car.features" value="Music System">
+                <label class="ml-1">Music System</label>
+              </div>
+
+              <div class="mr-3">
+                <input type="checkbox" v-model="car.features" value="Driver Included">
+                <label class="ml-1">Driver Included</label>
+              </div>
+
+              <div class="mr-3">
+                <input type="checkbox" v-model="car.features" value="GPS">
+                <label class="ml-1">GPS</label>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Image Upload -->
+          <div class="form-group">
+            <label>Car Image</label>
+            <input type="file" class="form-control" multiple accept="image/*" @change="fileSelected">
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-dark btn-block mt-3">
+            Add Car
+          </button>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<script>
+import Sidebar from '@/components/sidebar.vue';
+import axios from "axios";
+
+export default {
+  name: "AddNewCar",
+
+  data() {
+    return {
+      car: {
+        name: "",
+        year: "",
+        category: "SUV",
+        seats: "",
+        fuel: "Petrol",
+        transmission: "Automatic",
+        price: "",
+        status: "Available",
+        description: "",
+        features: [],
+        images: [],
+      }
+    };
+  },
+
+ 
+
+methods: {
+  fileSelected(e) {
+  this.car.images = Array.from(e.target.files);
+},
+
+  async submitCar() {
+    try {
+      const formData = new FormData();
+
+      // append text fields
+      formData.append("name", this.car.name);
+      formData.append("year", this.car.year);
+      formData.append("category", this.car.category);
+      formData.append("seats", this.car.seats);
+      formData.append("fuel", this.car.fuel);
+      formData.append("transmission", this.car.transmission);
+      formData.append("price", this.car.price);
+      formData.append("status", this.car.status);
+      formData.append("description", this.car.description);
+
+      //  features is ARRAY → backend expects array/string
+      this.car.features.forEach((feature) => {
+        formData.append("features", feature);
+      });
+
+      // append image
+          this.car.images.forEach((file) => {
+          formData.append("images", file);
+        });
+
+      // API call
+      const res = await axios.post( "http://localhost:3000/api/cars/add",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+
+      alert("Car added successfully 🚗");
+      console.log(res.data);
+      this.$router.push("/admin/dashboard");
+
+    } catch (error) {
+      console.error(error.response?.data || error.message);
+      alert("Failed to add car ");
+    }
+  },
+}
+
+};
+</script>
+
+<style scoped>
+.add-car-container {
+  margin-left: 240px;
+  padding: 30px;
+  transition: 0.3s ease;
+}
+
+@media (max-width: 992px) {
+  .add-car-container {
+    margin-left: 0;
+    padding: 20px;
+  }
+}
+
+.card {
+  border-radius: 12px;
+  border: none;
+}
+
+.form-control {
+  height: 45px;
+  border-radius: 8px;
+}
+textarea.form-control {
+  border-radius: 8px;
+}
+</style>
