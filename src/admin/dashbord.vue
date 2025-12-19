@@ -144,7 +144,7 @@
 	</div>
 </template>
 <script>
-import axios from 'axios';
+import api from '@/services/api';
 // import adminNavbar from "@/components/adminNavbar.vue";
 // import sidebar from "@/components/sidebar.vue";
 
@@ -186,7 +186,7 @@ export default {
 	methods: {
 		async fetchRecentCars() {
 			try {
-				const res = await axios.get('http://localhost:3000/api/cars/recent');
+				const res = await api.get('/cars/recent');
 				this.recentCars = res.data.cars;
 			} catch (error) {
 				console.error('Failed to fetch recent cars', error);
@@ -195,7 +195,7 @@ export default {
 
 		async fetchCarStats() {
 			try {
-				const res = await axios.get('http://localhost:3000/api/cars/stats');
+				const res = await api.get('/cars/stats');
 				this.stats.totalCars = res.data.stats.totalCars;
 				this.stats.availableCars = res.data.stats.availableCars;
 				this.stats.bookedCars = res.data.stats.bookedCars;
@@ -207,7 +207,7 @@ export default {
 		// ✅ ADDED
 		async fetchRecentUsers() {
 			try {
-				const res = await axios.get('http://localhost:3000/api/admin/users/recent', {
+				const res = await api.get('/admin/users/recent', {
 					withCredentials: true,
 				});
 				this.recentUsers = res.data.users;
@@ -218,7 +218,7 @@ export default {
 		},
 		async fetchRevenue() {
 			try {
-				const res = await axios.get('http://localhost:3000/api/admin/revenue', {
+				const res = await api.get('/admin/revenue', {
 					withCredentials: true,
 				});
 				this.revenue = res.data.revenue;
@@ -237,7 +237,7 @@ export default {
 		},
 		async fetchUserStats() {
 			try {
-				const res = await axios.get('http://localhost:3000/api/admin/users/stats', {
+				const res = await api.get('/admin/users/stats', {
 					withCredentials: true,
 				});
 

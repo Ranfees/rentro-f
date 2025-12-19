@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import api from '@/services/api';
 // import sidebar from "@/components/sidebar.vue";
 
 export default {
@@ -155,7 +155,7 @@ export default {
 	methods: {
 		async fetchCars() {
 			try {
-				const res = await axios.get('http://localhost:3000/api/cars');
+				const res = await api.get('/cars');
 				this.cars = res.data.cars;
 			} catch (error) {
 				console.error('FETCH CARS ERROR:', error);
@@ -182,7 +182,7 @@ export default {
 			if (!confirm('Are you sure you want to delete this car?')) return;
 
 			try {
-				await axios.delete(`http://localhost:3000/api/cars/${id}`);
+				await api.delete(`/cars/${id}`);
 				this.cars = this.cars.filter((car) => car._id !== id);
 				alert('Car deleted successfully');
 			} catch (error) {

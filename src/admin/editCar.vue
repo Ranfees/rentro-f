@@ -132,7 +132,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import api from '@/services/api';
 
 
 export default {
@@ -158,8 +158,8 @@ export default {
 
   async mounted() {
     try {
-      const res = await axios.get(
-        `http://localhost:3000/api/cars/${this.$route.params.id}`
+      const res = await api.get(
+        `/cars/${this.$route.params.id}`
       );
       this.car = res.data.car;
     } catch (err) {
@@ -196,8 +196,8 @@ export default {
           formData.append("image", this.image);
         }
 
-        await axios.put(
-          `http://localhost:3000/api/cars/${this.car._id}`,
+        await api.put(
+          `/cars/${this.car._id}`,
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );

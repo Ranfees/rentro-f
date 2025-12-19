@@ -130,7 +130,7 @@
 
 <script>
 import Sidebar from '@/components/sidebar.vue';
-import axios from "axios";
+import api from '@/services/api';
 
 export default {
   name: "AddNewCar",
@@ -186,7 +186,7 @@ methods: {
         });
 
       // API call
-      const res = await axios.post( "http://localhost:3000/api/cars/add",
+      const res = await api.post( "/cars/add",
         formData,
         {
           headers: {

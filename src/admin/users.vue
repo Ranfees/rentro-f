@@ -79,7 +79,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import api from "@/services/api";
 import sidebar from "@/components/sidebar.vue";
 
 export default {
@@ -100,8 +100,8 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const res = await axios.get(
-          "http://localhost:3000/api/admin/users",
+        const res = await api.get(
+          "/admin/users",
           { withCredentials: true } // 🔐 admin auth
         );
         this.users = res.data.users;
@@ -124,8 +124,8 @@ export default {
 
     async toggleStatus(user) {
       try {
-        await axios.put(
-          `http://localhost:3000/api/admin/users/${user._id}/toggle`,
+        await api.put(
+          `/admin/users/${user._id}/toggle`,
           {},
           { withCredentials: true }
         );
@@ -139,8 +139,8 @@ export default {
       if (!confirm("Are you sure you want to delete this user?")) return;
 
       try {
-        await axios.delete(
-          `http://localhost:3000/api/admin/users/${user._id}`,
+        await api.delete(
+          `/admin/users/${user._id}`,
           { withCredentials: true }
         );
         this.fetchUsers(); // refresh list
