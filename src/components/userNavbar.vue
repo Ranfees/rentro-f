@@ -27,7 +27,7 @@
 		>
 			<ul class="navbar-nav mx-auto">
 				<li class="nav-item d-lg-none">
-					<RouterLink class="nav-link" to="/user/profile">Profile</RouterLink>
+					<RouterLink class="nav-link" to="/">home</RouterLink>
 				</li>
 			</ul>
 
